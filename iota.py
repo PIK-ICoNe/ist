@@ -66,10 +66,10 @@ class IOTA(object):
             raise ValueError("Method needs to be iota, iotar, biiota or fancy_iota!")
 
     def __str__(self):
-        print "\n---"
+        print("\n---")
         for attr in sorted(vars(self)):
-            print attr, ':', getattr(self, attr)
-        print "---"
+            print(attr, ':', getattr(self, attr))
+        print("---")
         return ""
 
     ###############################################################################
@@ -114,7 +114,7 @@ class IOTA(object):
             raise ValueError("Please input two timeseries (or three for conditional) similarity testing.")
 
         dist = np.zeros(self.num_surrogates)
-        for j in xrange(self.num_surrogates):
+        for j in range(self.num_surrogates):
             for t in args:
                 np.random.shuffle(t)
             dist[j] = func(*args)
@@ -173,7 +173,7 @@ class IOTA(object):
     def normalize(arr, typ = "gaussian"):
         if typ == "gaussian":
             #normalizes to gaussian
-            return np.array([norm.ppf(percentileofscore(arr, arr[i], 'mean') / 100.) for i in xrange(len(arr))])
+            return np.array([norm.ppf(percentileofscore(arr, arr[i], 'mean') / 100.) for i in range(len(arr))])
         else:
             # normalizes arr to the interval [0, 1]
             return 1. * (arr - np.nanmin(arr)) / (np.nanmax(arr) - np.nanmin(arr))
@@ -399,15 +399,15 @@ def tests():
                 test = iota.significance_onesided
 
             # pairwise
-            for l in itertools.permutations(data.data_vars.keys(), 2):
+            for l in itertools.permutations(list(data.data_vars.keys()), 2):
                 io = iota.similarity(data[l[0]].values, data[l[1]].values)
-                print method, weighting, l, io, test(io, data[l[0]].values, data[l[1]].values)
+                print(method, weighting, l, io, test(io, data[l[0]].values, data[l[1]].values))
 
 
             # conditional
-            for l in itertools.permutations(data.data_vars.keys(), 3):
+            for l in itertools.permutations(list(data.data_vars.keys()), 3):
                 io = iota.conditional_similarity(data[l[0]].values, data[l[1]].values, data[l[2]].values)
-                print method, weighting, l, io, test(io, data[l[0]].values, data[l[1]].values, data[l[2]].values)
+                print(method, weighting, l, io, test(io, data[l[0]].values, data[l[1]].values, data[l[2]].values))
 
 if __name__ == "__main__":
     # TODO: implement tests!
